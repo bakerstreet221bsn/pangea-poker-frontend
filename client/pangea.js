@@ -92,6 +92,10 @@ $('#bet').click(function(){
   }
 })
 
+$('#leave').click(function(){
+  pangea.sendMessage({'action':{'leave':''}})
+})
+
 pangea.sendChat = function(){
   var chatMessage = $('#chat-input > input').val()
   pangea.sendMessage({'chat':chatMessage})
@@ -151,6 +155,15 @@ $('#disconnect-confirm').click(function(){
   pangea.ws.close()
   $('#disconnect-window').toggleClass('hide')
   $('#options-window').toggleClass('hide')
+})
+
+$('#reset').click(function(){
+    pangea.sendMessage({'action':{'reset':''}})
+    //pangea.ws.close()
+    $('#options-window').toggleClass('hide')
+    //setTimeout(function (){
+    //    window.location.reload()
+    //}, 5000)
 })
 
 $('.custom-bet-btn').click(function(){

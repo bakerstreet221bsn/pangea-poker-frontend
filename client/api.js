@@ -6,10 +6,33 @@ var WebSocket = window.WebSocket
 pangea.API = new Object()
 
 pangea.API.seats = function(seatArray){
-  for (var i=0; i < seatArray.length; i++){
-    var seatIndex = seatArray[i]['seat']
-    pangea.seats[seatIndex].update(seatArray[i])
+  for (var i=0; i < pangea.seats.length; i++) {
+      var originalSeat = pangea.seats[i]
+      var originalSeatNumber = originalSeat['seat']
+
+      var matched = false
+      for (var j=0; j < seatArray.length; j++) {
+          var newSeat = seatArray[j]
+          if (newSeat && newSeat['seat'] == originalSeatNumber) {
+            //console.log("Found match for seat: " + originalSeatNumber)
+            originalSeat.update(newSeat)
+            matched = true
+            break;
+          }
+      }
+
+      // If the seat is not in the list, assume that person has left the table
+      if (!matched) {
+          //console.log("Could not find a match for seat: " + originalSeatNumber)
+          originalSeat.empty = 1
+          //originalSeat.player = 0
+      }
   }
+
+  //for (var i=0; i < seatArray.length; i++){
+  //  var seatIndex = seatArray[i]['seat']
+  //  pangea.seats[seatIndex].update(seatArray[i])
+  //}
   pangea.update()
 }
 
@@ -35,6 +58,12 @@ pangea.API.game = function(gameArray){
   pangea.update()
 }
 
+pangea.API.error = function(error_data) {
+    console.log("Error: " + error_data)
+    if (error_data.hasOwnProperty("error_message"))
+        window.alert("Error: " + error_data.error_message)
+}
+
 pangea.API.deal = function(message){
   function dealer(new_dealer){
     pangea.dealer = new_dealer
@@ -55,6 +84,7 @@ pangea.API.deal = function(message){
       pangea.boardcards[position].card = new_card[position]
     }
   }
+
   var is_holecards = false
   var newholecards = []
   var handlers = {'holecards':holecards, 'dealer':dealer,

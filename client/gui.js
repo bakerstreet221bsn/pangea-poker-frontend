@@ -9,6 +9,7 @@ pangea.gui.addJoinLabel = function(){
   $('#fold').addClass('hide')
   $('#check').addClass('hide')
   $('#bet').addClass('hide')
+  $('#leave').addClass('hide')
   $('#bet_slider').addClass('hide')
   $('#bet-amount').addClass('hide')
   $('#bet-label').addClass('hide')
@@ -27,6 +28,7 @@ pangea.gui.addPlayerControls = function(){
   $('#fold').removeClass('hide')
   $('#check').removeClass('hide')
   $('#bet').removeClass('hide')
+  $('#leave').removeClass('hide')
   $('#bet_slider').removeClass('hide')
   $('#bet-amount').removeClass('hide')
   $('#bet-label').removeClass('hide')
@@ -322,7 +324,7 @@ pangea.gui.optionHandlers = {
     var theDecks = {'normal':pangea.deck1, 'fourcolor':pangea.deck2}
     pangea.deck = theDecks[whichDeck]
     pangea.gui.refreshImages()
-  } 
+  }
 }
 
 
@@ -354,13 +356,14 @@ pangea.gui.changeSeats = function(config){
   var configs = {2:removeFor2, 6:removeFor6}
   if (Object.keys(configs).indexOf(String(config)) >= 0){
     var toRemove = configs[config]
+    console.log("gui changeSeats toRemove: " + toRemove)
     for (var i=0; i<toRemove.length; i++){
       $(toRemove[i]).remove()
     }    
   }
 }
 
-pangea.gui.updateSeats = function(){
+pangea.gui.updateSeats = function() {
   if (pangea.game.seats != pangea.seats.length){
     pangea.gui.changeSeats(pangea.game.seats)
   }

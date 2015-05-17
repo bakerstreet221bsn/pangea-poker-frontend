@@ -192,19 +192,25 @@
 #fold {
     position:absolute;
     top:532px;
-    left:420px;
+    left:350px;
 }
 
 #check {
     position:absolute;
     top:532px;
-    left:540px;
+    left:460px;
 }
 
 #bet {
     position:absolute;
     top:532px;
-    left:660px;
+    left:570px;
+}
+
+#leave {
+    position:absolute;
+    top:532px;
+    left:680px;
 }
 
 #autocontrols {
@@ -774,7 +780,7 @@ input[type=checkbox] {
     top:70;
     left:300;
     width:200px;
-    min-height:320px;
+    min-height:400px;
     background:#e4e4e4;
     border-width:5px;
     border-style:solid;
@@ -808,13 +814,13 @@ input[type=checkbox] {
 #options-cancel {
     position:absolute;
     left:13px;
-    top:272px
+    top:320px
 }
 
 #options-confirm {
     position:absolute;
     left:107px;
-    top:272px;
+    top:320px;
 }
 
 .options-btn {
@@ -834,10 +840,35 @@ input[type=checkbox] {
     border-width:1px;
 }
 
+#reset {
+    position:absolute;
+    left:20px;
+    top:350px;
+    height:22px;
+    width:160px;
+    line-height:22px;
+    font-size:14px;
+    font-family:Helvetica, Arial, sans-serif;
+    color: #ffffff;
+    text-align:center;
+    background:#3930BE;
+    -webkit-border-radius: 6;
+    -moz-border-radius: 6;
+    border-radius: 6px;
+    border-style:solid;
+    border-color:#000;
+    border-width:1px;
+}
+
+#reset:hover {
+    background:#ff0000;
+    cursor:hand;
+}
+
 #disconnect {
     position:absolute;
     left:20px;
-    top:300px;
+    top:380px;
     height:22px;
     width:160px;
     line-height:22px;

@@ -114,13 +114,23 @@ pangea.openWebSocket = function(){
 }
 
 pangea.onMessage = function(message){
-  var handlers = {'action':pangea.API.action, 'game':pangea.API.game, 'seats':pangea.API.seats, 'player':pangea.API.player, 'deal':pangea.API.deal, 'chat':pangea.API.chat}
+  // TODO: Handler for errors is required
+  var handlers = {
+      'action':pangea.API.action, 'game':pangea.API.game,
+      'seats':pangea.API.seats, 'player':pangea.API.player,
+      'deal':pangea.API.deal, 'chat':pangea.API.chat,
+      'error': pangea.API.error
+  }
+
   message = JSON.parse(message)
-  console.log('Recieved: ', message)
+  console.log('Received: ', message)
   for (var key in message){
-    if (message.hasOwnProperty(key)){
-      var handler = handlers[key]
-      handler(message[key])
+    if (message.hasOwnProperty(key)) {
+        var handler = handlers[key]
+        if (handler)
+            handler(message[key])
+    } else {
+        console.log("Unexpected base message property: " + key);
     }
   }
 }
@@ -134,5 +144,18 @@ pangea.sendMessage = function(message){
 }
 
 pangea.dealerTray()
-pangea.wsURI = 'ws://localhost:9000'
+
+// Pick up the web socket port number from the browser url
+var port = null
+var values = window.location.href.split(":")
+if (values.length >= 1) {
+  port = parseInt(values[values.length-1])
+}
+
+if (port == null || isNaN(port))
+  port = 8889
+
+pangea.wsURI = 'ws://localhost:' + port + '/api/ws'
+console.log("Listening on websocket: " + pangea.wsURI)
+
 pangea.ws = pangea.openWebSocket()

@@ -92,7 +92,7 @@ pangea.Seat.prototype.sitdown = function(){
       var seatnum = Number(this.id.split('-')[1])
       pangea.actions.join(seatnum)
     })
-  } 
+  }
 }
 
 pangea.Seat.prototype.holdingCards = function(){
