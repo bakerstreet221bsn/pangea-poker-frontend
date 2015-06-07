@@ -226,7 +226,19 @@ pangea.gui.callRaise = function(){
 }
 
 pangea.gui.timer = function(){
+
+  var foldElement = $('#fold')
+  var betElement = $('#bet')
+  var checkElement = $('#check')
+
   if (pangea.game.myturn == 1){
+    if (foldElement.attr('disabled'))
+      foldElement.attr('disabled', false)
+    if (betElement.attr('disabled'))
+      betElement.attr('disabled', false)
+    if (checkElement.attr('disabled'))
+       checkElement.attr('disabled', false)
+
     if (pangea.game.timer != 0){
       $('#timer').removeClass('hide')
       var timerImg = "./images/timer.gif?" + new Date().getTime();
@@ -246,6 +258,13 @@ pangea.gui.timer = function(){
     $('#timer').addClass('hide')
     var timerElement = $('#timer > img')
     timerElement.remove()
+
+    if (!foldElement.attr('disabled'))
+      foldElement.attr('disabled', true)
+    if (!betElement.attr('disabled'))
+      betElement.attr('disabled', true)
+    if (!checkElement.attr('disabled'))
+       checkElement.attr('disabled', true)
   }
 }
 

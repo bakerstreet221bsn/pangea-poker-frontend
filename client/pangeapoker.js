@@ -110,11 +110,17 @@ pangea.openWebSocket = function(){
   ws.onmessage = function(event){
     pangea.onMessage(event.data)
   }
+  ws.onclose = function(event){
+    setTimeout(function() {
+      console.log("Websocket disconnected. Attempting to reconnect")
+      pangea.ws = pangea.openWebSocket()
+    }, 5000)
+  }
+
   return ws
 }
 
 pangea.onMessage = function(message){
-  // TODO: Handler for errors is required
   var handlers = {
       'action':pangea.API.action, 'game':pangea.API.game,
       'seats':pangea.API.seats, 'player':pangea.API.player,
@@ -139,8 +145,8 @@ pangea.sendMessage = function(message){
   if (typeof message != 'string'){
     message = JSON.stringify(message)
   }
+  console.log('Sending message to application: ', message)
   pangea.ws.send(message)
-  console.log('Sent: ', message)
 }
 
 pangea.dealerTray()
