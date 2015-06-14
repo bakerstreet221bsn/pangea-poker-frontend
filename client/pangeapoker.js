@@ -159,7 +159,7 @@ if (values.length >= 1) {
 }
 
 if (port == null || isNaN(port))
-  port = 8889
+  port = 5000
 
 pangea.wsURI = 'ws://localhost:' + port + '/api/ws'
 console.log("Listening on websocket: " + pangea.wsURI)

@@ -9,12 +9,24 @@ pangea.API.seats = function(seatArray){
   for (var i=0; i < pangea.seats.length; i++) {
       var originalSeat = pangea.seats[i]
       var originalSeatNumber = originalSeat['seat']
+      var originalCards = originalSeat['playercards']
+      var originalBet = originalSeat['bet']
 
       var matched = false
       for (var j=0; j < seatArray.length; j++) {
           var newSeat = seatArray[j]
+          var newCards = newSeat['playercards']
+          var newBet = newSeat['bet']
+
           if (newSeat && newSeat['seat'] == originalSeatNumber) {
-            //console.log("Found match for seat: " + originalSeatNumber)
+            if ((originalCards != null && originalCards.length > 0) && (newCards == null || newCards.length == 0)) {
+              originalSeat.returnCards()
+            }
+
+            //if ( (originalBet != null && originalBet > 0) && (newBet == null || newBet == 0)) {
+            //  originalSeat.chipsToPot()
+            //}
+
             originalSeat.update(newSeat)
             matched = true
             break;
@@ -23,16 +35,12 @@ pangea.API.seats = function(seatArray){
 
       // If the seat is not in the list, assume that person has left the table
       if (!matched) {
-          //console.log("Could not find a match for seat: " + originalSeatNumber)
+          originalSeat.action = ""
           originalSeat.empty = 1
-          //originalSeat.player = 0
+          originalSeat.returnCards()
       }
   }
 
-  //for (var i=0; i < seatArray.length; i++){
-  //  var seatIndex = seatArray[i]['seat']
-  //  pangea.seats[seatIndex].update(seatArray[i])
-  //}
   pangea.update()
 }
 
@@ -69,6 +77,7 @@ pangea.API.deal = function(message){
     pangea.dealer = new_dealer
     pangea.update()
   }
+
   function holecards(new_cards){
     for (var seat in pangea.seats){
       // pangea.seats[seat].playercards = null
@@ -79,23 +88,39 @@ pangea.API.deal = function(message){
     }
     is_holecards = true
   }
+
   function boardcards(new_card){
-    for (var position in new_card){
-      pangea.boardcards[position].card = new_card[position]
+    for (var i=0; i < 5; i++) {
+      var existingCard = pangea.boardcards[i]
+      var newData = new_card[i]
+
+      if (existingCard.card == null && newData != null) {
+        existingCard.card = newData
+        updatedBoard = true
+      } else if (existingCard.card != null && newData == null) {
+        //existingCard.card = null
+        existingCard.returnCard()
+        updatedBoard = true
+      }
     }
   }
 
   var is_holecards = false
   var newholecards = []
-  var handlers = {'holecards':holecards, 'dealer':dealer,
-                 'board':boardcards}
+  var updatedBoard = false
+  var handlers = {'holecards':holecards, 'dealer':dealer, 'board':boardcards}
+
   for (var key in message){
+    console.log("key: " + key)
     if (message.hasOwnProperty(key)){
       var handler = handlers[key]
       handler(message[key])
     }
   }
-  if (is_holecards){pangea.gui.dealcards()}
+  if (is_holecards) {
+      pangea.gui.dealcards()
+  }
+
   pangea.update()
 }
 

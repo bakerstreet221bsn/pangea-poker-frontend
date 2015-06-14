@@ -72,16 +72,15 @@ $('#bet_slider').on("input", function(){
 
 $('#fold').click(function(){
   if (pangea.game.myturn == 1){
-    pangea.sendMessage({'action':{'fold':'1'}})
+    pangea.sendMessage({'action':{'fold':''}})
   } else {
     $('#checkbox1').click()
   }
 })
 
 $('#check').click(function(){
-  var thisBet = pangea.game.tocall
   if (pangea.game.myturn == 1){
-    pangea.sendMessage({'action':{'bet':thisBet}})
+    pangea.sendMessage({'action':{'check':''}})
   }
 })
 

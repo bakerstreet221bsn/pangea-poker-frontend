@@ -27,10 +27,18 @@ pangea.BoardCard.prototype.getCard = function(){
 
 pangea.BoardCard.prototype.show = function(){
   this.getCard()
-  if (this.image != null){
-    var cardElement = $('<img>')
-    cardElement.attr('src', this.image)
-    $(this.selector).append(cardElement)
+  if (this.image != null) {
+    //var cardElement = $('<img>')
+    //cardElement.attr('src', this.image)
+    //$(this.selector).append(cardElement)
+    var imgElement = $(this.selector).find("img")[0]
+    if (!imgElement) {
+        imgElement = $('<img>')
+        $(this.selector).append(imgElement)
+    }
+
+    if (typeof(imgElement.attr) === 'function')
+        imgElement.attr('src', this.image)
   }
 }
 
@@ -56,15 +64,16 @@ pangea.BoardCard.prototype.deal = function(){
     dealElement.css({'position':'absolute', 'top':this.origin[0],
                      'left':left, 'width':pangea.constants.dealwidth})
     pangea.constants.root.append(dealElement)
+
     var thiscard = this
-    dealElement.animate(
-      {'left':$(this.selector).css('left'), 'top':$(this.selector).css('top'),
-       'width':$(this.selector).width()}, dealspeed, "linear",
-      function(){
+    dealElement.animate({
+            'left':$(this.selector).css('left'),
+            'top':$(this.selector).css('top'),
+            'width':$(this.selector).width()
+        }, dealspeed, "linear", function() {
         dealElement.remove()
         thiscard.show()
-      }
-    )
+    })
   }
 }
 
